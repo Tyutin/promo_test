@@ -2,8 +2,6 @@ import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
 import '@assets/styles/global.scss';
 import './ShopLayout.scss';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]/handler';
 
 const montserrat = Montserrat({ subsets: ['latin'] });
 
@@ -17,8 +15,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
-
   return (
     <html lang="ru">
       <body className={montserrat.className}>

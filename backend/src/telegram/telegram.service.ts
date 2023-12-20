@@ -11,8 +11,10 @@ export class TelegramService {
 
   @Start()
   async onStart(@Ctx() ctx: Context) {
-    console.log(ctx.from);
     const user = await this.userService.createUserFromBot(ctx.from);
     console.log(user);
+    console.log('='.repeat(40));
+    console.log(ctx);
+    console.log('='.repeat(40));
   }
 }
