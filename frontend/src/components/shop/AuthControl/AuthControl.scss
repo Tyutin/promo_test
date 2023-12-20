@@ -1,0 +1,17 @@
+.auth-control {
+  width: 50px;
+  height: 50px;
+  background-color: blueviolet;
+
+
+  @media (max-width: 425px) {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.auth-user-picture {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+}

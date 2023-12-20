@@ -1,0 +1,6 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.formatDocument": "explicit",
+    "source.fixAll": "explicit"
+  }
+}

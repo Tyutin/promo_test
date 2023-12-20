@@ -1,0 +1,41 @@
+{
+  "name": "obed-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:local": "DB_HOST=localhost BACKEND_API_HOST=http://localhost:3001 yarn dev -p 80",
+    "build": "DB_HOST=localhost BACKEND_API_HOST=http://localhost:3001 next build",
+    "start": "DB_HOST=localhost BACKEND_API_HOST=http://localhost:3001 next start -p 80",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ant-design/cssinjs": "1.17.5",
+    "@types/js-cookie": "^3.0.5",
+    "@types/react-slick": "^0.23.10",
+    "antd": "^5.11.3",
+    "classnames": "^2.3.2",
+    "immer": "9.0.21",
+    "js-cookie": "^3.0.5",
+    "next": "14.0.1",
+    "next-auth": "^4.24.4",
+    "pg": "8.11.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-icons": "^4.11.0",
+    "react-slick": "^0.29.0",
+    "sass": "^1.69.0",
+    "sharp": "^0.32.6",
+    "swiper": "^10.3.1",
+    "typeorm": "^0.3.17",
+    "zustand": "4.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.1",
+    "typescript": "^5"
+  }
+}

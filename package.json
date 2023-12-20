@@ -1,0 +1,14 @@
+{
+  "name": "obed-all",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Tyutin Kirill <kerya.tyutin@yandex.ru>",
+  "license": "MIT",
+  "scripts": {
+    "start-db": "docker-compose up obed_db",
+    "start-backend": "docker-compose up nestjs",
+    "start-frontend": "docker-compose up nextjs",
+    "start-nginx": "docker-compose up nginx",
+    "start-all": "docker-compose up"
+  }
+}
