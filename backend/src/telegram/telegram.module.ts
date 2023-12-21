@@ -4,12 +4,16 @@ import { TelegrafModule } from 'nestjs-telegraf';
 import { options } from 'src/telegram-config.factory';
 import { UserService } from 'src/user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from 'src/user/user.entity';
+import {
+  AuthRequestEntity,
+  SessionEntity,
+  UserEntity,
+} from 'src/user/user.entity';
 
 @Module({
   imports: [
     TelegrafModule.forRootAsync(options()),
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, SessionEntity, AuthRequestEntity]),
   ],
   providers: [TelegramService, UserService],
 })

@@ -1,14 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { UserEntity } from './user.entity';
+import { SessionEntity, UserEntity, AuthRequestEntity } from './user.entity';
 import { User } from 'telegraf/types';
 import { InjectRepository } from '@nestjs/typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(SessionEntity)
+    private readonly sessionRepository: Repository<SessionEntity>,
+    @InjectRepository(AuthRequestEntity)
+    private readonly authRequestRepository: Repository<AuthRequestEntity>,
   ) {}
 
   async createUserFromBot(userFromTelegram: User): Promise<UserEntity> {
@@ -26,5 +31,44 @@ export class UserService {
     delete userToSave.id;
 
     return await this.userRepository.save(userToSave);
+  }
+
+  async getAuthRequestById(id: string): Promise<AuthRequestEntity> {
+    return await this.authRequestRepository.findOneBy({ id });
+  }
+
+  async createUserSession(
+    user: UserEntity,
+    authRequest: AuthRequestEntity,
+  ): Promise<SessionEntity> {
+    const alreadyExistingSession = await this.sessionRepository.findOne({
+      where: {
+        user,
+        authRequest,
+      },
+      relations: {
+        user: true,
+        authRequest: true,
+      },
+    });
+    if (alreadyExistingSession) {
+      return alreadyExistingSession;
+    }
+    const session = new SessionEntity();
+    session.user = user;
+    session.authRequest = authRequest;
+    session.expires = new Date(new Date().setMonth(new Date().getMonth() + 6))
+      .getTime()
+      .toString();
+    session.sessionToken = uuidv4();
+    return await this.sessionRepository.save(session);
+  }
+
+  async setRefPromoToUser(
+    user: UserEntity,
+    promocode: string,
+  ): Promise<UserEntity> {
+    user.ref_promocode = promocode;
+    return await this.userRepository.save(user);
   }
 }

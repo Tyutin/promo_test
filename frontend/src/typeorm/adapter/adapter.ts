@@ -46,12 +46,13 @@ export function TypeORMAdapter(
   return {
     async createAuthRequest(promocode?: string): Promise<AuthRequestEntity> {
       const m = await getManager(c)
-      const data = {
+      const data: Partial<AuthRequestEntity> = {
         expires: new Date(new Date().setDate(new Date().getDate() + 1)).getTime().toString(),
-        promocode: promocode || null
+        ref_promocode: promocode
       }
       const authRequest = Object.assign({}, new AuthRequestEntity(), data)      
-      return await m.save(AuthRequestEntity, authRequest)
+      const ar = await m.save(AuthRequestEntity, authRequest)
+      return ar
     }
     // async getUserByAccount(provider_providerAccountId) {
     //   const m = await getManager(c)

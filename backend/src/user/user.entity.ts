@@ -1,23 +1,13 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   Relation,
-  ValueTransformer,
 } from 'typeorm';
-
-const transformer: Record<'date' | 'bigint', ValueTransformer> = {
-  date: {
-    from: (date: string | null) => date && new Date(parseInt(date, 10)),
-    to: (date?: Date) => date?.valueOf().toString(),
-  },
-  bigint: {
-    from: (bigInt: string | null) => bigInt && parseInt(bigInt, 10),
-    to: (bigInt?: number) => bigInt?.toString(),
-  },
-};
 
 @Entity('users')
 export class UserEntity {
@@ -42,6 +32,9 @@ export class UserEntity {
   @Column({ nullable: true })
   language_code?: string;
 
+  @Column({ nullable: true })
+  ref_promocode!: string;
+
   @OneToMany(() => SessionEntity, (session) => session.user)
   sessions!: Relation<SessionEntity>[];
 }
@@ -54,11 +47,15 @@ export class SessionEntity {
   @Column({ unique: true })
   sessionToken!: string;
 
-  @Column({ transformer: transformer.date })
+  @Column()
   expires!: string;
 
   @ManyToOne(() => UserEntity, (user) => user.sessions)
   user!: Relation<UserEntity>;
+
+  @OneToOne(() => AuthRequestEntity)
+  @JoinColumn()
+  authRequest!: Relation<AuthRequestEntity>;
 }
 
 @Entity('authRequests')
@@ -70,5 +67,5 @@ export class AuthRequestEntity {
   expires!: string;
 
   @Column({ nullable: true })
-  promocode!: string;
+  ref_promocode!: string;
 }
