@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react';
 import {
   createAuthRequestAction,
-  setUserToSession,
-} from '../../../typeorm/actions';
+  loginByRequestId,
+} from '../../../../typeorm/actions';
 
-export default function AuthButton() {
+export default function LoginButton() {
   const [authRequestId, setAuthRequestId] = useState<string>('');
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function AuthButton() {
       console.log('isPolling');
       pollingInterval = setInterval(async () => {
         console.log('interval');
-        const isUserSet = await setUserToSession(authRequestId);
+        const isUserSet = await loginByRequestId(authRequestId);
         console.log(isUserSet);
         if (isUserSet) {
           clearInterval(pollingInterval);
@@ -29,9 +29,9 @@ export default function AuthButton() {
 
   async function startAuth() {
     const authReqId = await createAuthRequestAction();
+    setAuthRequestId(authReqId);
     const tgLink = `https://t.me/promo_delivery_test_bot?start=${authReqId}`;
     window.open(tgLink, '_blank');
-    setAuthRequestId(authReqId);
   }
-  return <button onClick={startAuth}>GET REQUEST ID{authRequestId}</button>;
+  return <button onClick={startAuth}>Login</button>;
 }

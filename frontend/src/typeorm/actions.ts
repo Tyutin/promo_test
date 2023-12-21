@@ -2,6 +2,8 @@
 import {cookies} from 'next/headers'
 import config from '../../../backend/dataSource/dataSource.config'
 import { TypeORMAdapter } from './adapter/adapter'
+import { getSession } from './getSession'
+import { revalidatePath } from 'next/cache'
 
 const adapter = TypeORMAdapter(config)
 
@@ -21,16 +23,20 @@ export async function createAuthRequestAction() {
   return authRequest.id
 }
 
-export async function setUserToSession(authRequestId:string): Promise<boolean> {
+export async function loginByRequestId(authRequestId:string): Promise<boolean> {
   const userAndSession = await adapter.getUserAndSessionByAuthRequestId(authRequestId)
   if(!userAndSession) return false
-  const cookiesList = cookies()
-  const {user, session} = userAndSession
-  cookiesList.set('sessionToken', session.sessionToken, {
-    httpOnly: true,
-    sameSite: 'strict',
-    expires: new Date(session.expires).getTime()
-    // secure: true TODO: проверка на https
-  })
+  const {user, session: dbSession} = userAndSession
+  const session = await getSession();
+  session.sessionToken = dbSession.sessionToken
+  session.isLoggedIn = true;
+  await session.save();
+  revalidatePath('/');
   return true
+}
+
+export async function logout() {
+  const session = await getSession();
+  session.destroy();
+  revalidatePath('/session');
 }

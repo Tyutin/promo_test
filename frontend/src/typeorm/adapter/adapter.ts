@@ -71,6 +71,20 @@ export function TypeORMAdapter(
       if (!sessionAndUser) return null
       const {user, ...session} = sessionAndUser
       return {user, session}
+    },
+
+    async getUserBySessionToken(sessionToken: string): Promise<UserEntity | null> {
+      const m = await getManager(c)
+      const session = await m.findOne(SessionEntity, {
+        where: {
+          sessionToken
+        },
+        relations: {
+          user: true
+        }
+      })
+      if (!session) return null
+      return session.user
     }
     // async getSessionAndUser(sessionToken) {
     //   const m = await getManager(c)

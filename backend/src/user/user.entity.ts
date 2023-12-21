@@ -6,8 +6,9 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-  Relation,
 } from 'typeorm';
+
+import type { Relation } from 'typeorm';
 
 @Entity('users')
 export class UserEntity {
