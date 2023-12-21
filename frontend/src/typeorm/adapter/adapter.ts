@@ -53,7 +53,35 @@ export function TypeORMAdapter(
       const authRequest = Object.assign({}, new AuthRequestEntity(), data)      
       const ar = await m.save(AuthRequestEntity, authRequest)
       return ar
+    },
+
+    async getUserAndSessionByAuthRequestId(authRequestId: string): Promise<{user: UserEntity, session: Omit<SessionEntity, 'user'>} | null> {
+      const m = await getManager(c)
+      const sessionAndUser = await m.findOne<SessionEntity & {user: UserEntity}>(SessionEntity, {
+        where: {
+          authRequest: {
+            id: authRequestId
+          }
+        },
+        relations: {
+          authRequest: true,
+          user: true
+        }
+      })
+      if (!sessionAndUser) return null
+      const {user, ...session} = sessionAndUser
+      return {user, session}
     }
+    // async getSessionAndUser(sessionToken) {
+    //   const m = await getManager(c)
+    //   const sessionAndUser = await m.findOne<
+    //     AdapterSession & { user: AdapterUser }
+    //   >('SessionEntity', { where: { sessionToken }, relations: ['user'] })
+
+    //   if (!sessionAndUser) return null
+    //   const { user, ...session } = sessionAndUser
+    //   return { session, user }
+    // },
     // async getUserByAccount(provider_providerAccountId) {
     //   const m = await getManager(c)
     //   const account = await m.findOne<AdapterAccount & { user: AdapterUser }>(
@@ -98,16 +126,6 @@ export function TypeORMAdapter(
     //   const m = await getManager(c)
     //   const session = await m.save('SessionEntity', data)
     //   return session
-    // },
-    // async getSessionAndUser(sessionToken) {
-    //   const m = await getManager(c)
-    //   const sessionAndUser = await m.findOne<
-    //     AdapterSession & { user: AdapterUser }
-    //   >('SessionEntity', { where: { sessionToken }, relations: ['user'] })
-
-    //   if (!sessionAndUser) return null
-    //   const { user, ...session } = sessionAndUser
-    //   return { session, user }
     // },
     // async updateSession(data) {
     //   const m = await getManager(c)
