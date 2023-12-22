@@ -45,6 +45,7 @@ module.exports = {
         destination: `/profile`,
       },
     ]
-  }
+  },
+  ...(process.env.NEXT_OUTPUT ? {output: process.env.NEXT_OUTPUT} : {})
 }
 

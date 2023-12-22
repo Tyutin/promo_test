@@ -1,11 +1,13 @@
-FROM node:18.17.1-slim
+FROM node:18.19.0
+RUN mkdir /app
 
 WORKDIR /app
 
 COPY package.json yarn.lock ./
-
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
 COPY . .
 
-CMD ["yarn", "start:dev"]
+RUN yarn build:prod
+
+CMD ["yarn", "start:prod"]

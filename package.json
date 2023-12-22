@@ -9,6 +9,7 @@
     "start-backend": "docker-compose up nestjs",
     "start-frontend": "docker-compose up nextjs",
     "start-nginx": "docker-compose up nginx",
-    "start-all": "docker-compose up"
+    "start-all": "docker-compose up",
+    "start:frontend:docker": "cd frontend && yarn start:prod"
   }
 }
