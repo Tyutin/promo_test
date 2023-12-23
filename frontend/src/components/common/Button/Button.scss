@@ -1,0 +1,35 @@
+@import '../../../assets/styles/variables.scss';
+
+.button {
+  min-height: 42px;
+  padding: 12px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .3s ease;
+  border: none;
+  background: none;
+  font-weight: 600;
+
+  @media (max-width: ($TABLET_SHORT_WIDTH - 1px)) {
+    min-height: 30px;
+    padding: 8px 10px;
+  }
+
+  &_theme_orange {
+    background-color: $ORANGE;
+    color: #fff;
+
+    &:hover {
+      background-color: $ORANGE_HOVER;
+    }
+  }
+
+  &_theme_rose {
+    background-color: $ROSE;
+    color: $ORANGE;
+
+    &:hover {
+      background-color: $ROSE_HOVER;
+    }
+  }
+}

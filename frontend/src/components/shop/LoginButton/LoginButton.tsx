@@ -4,7 +4,10 @@ import { useEffect, useState } from 'react';
 import {
   createAuthRequestAction,
   loginByRequestId,
-} from '../../../../typeorm/actions';
+} from '../../../typeorm/actions';
+import Button from '@commonComponents/Button/Button';
+
+import './LoginButton.scss';
 
 export default function LoginButton() {
   const [authRequestId, setAuthRequestId] = useState<string>('');
@@ -33,5 +36,9 @@ export default function LoginButton() {
     const tgLink = `https://t.me/promo_delivery_test_bot?start=${authReqId}`;
     window.open(tgLink, '_blank');
   }
-  return <button onClick={startAuth}>Login</button>;
+  return (
+    <Button theme="rose" onClick={startAuth} additionalClasses="login-button">
+      ВХОД
+    </Button>
+  );
 }

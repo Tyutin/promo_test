@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
-import { Montserrat } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import '@assets/styles/global.scss';
 import './ShopLayout.scss';
+import Header from '@shopComponents/Header/Header';
+import { getSession } from '@/typeorm/getSession';
 
-const montserrat = Montserrat({ subsets: ['latin'] });
+const montserrat = Inter({ subsets: ['latin', 'cyrillic', 'cyrillic-ext'] });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,11 +17,13 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getSession();
   return (
     <html lang="ru">
       <body className={montserrat.className}>
         <div className="shop-layout">
-          <main className="shop-layout__page">{children}</main>
+          <Header isLoggedIn={session.isLoggedIn} />
+          <main className="container shop-layout__page">{children}</main>
         </div>
       </body>
     </html>

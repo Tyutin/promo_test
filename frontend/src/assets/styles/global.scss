@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 html {
   font-size: 18px;
   line-height: 1.2;
@@ -19,10 +21,12 @@ html {
   text-decoration: none;
   font-size: inherit;
   line-height: inherit;
+  font-family: inherit;
 }
 
 body {
-  background-color: #F5C0A7;
+  background: rgb(255, 250, 241);
+  background: linear-gradient(90deg, rgba(255, 250, 241, 1) 0%, rgba(255, 244, 227, 1) 100%);
 }
 
 h1,
@@ -42,10 +46,6 @@ ul {
   list-style: none;
 }
 
-a {
-  transition: color 0.2s ease;
-}
-
-a:hover {
-  color: blueviolet;
+.container {
+  max-width: $SHOP_LAYOUT_MAX_WIDTH;
 }

@@ -25,7 +25,8 @@
       "@assets/*": ["./src/assets/*"],
       "@fetch/*": ["./src/fetch/*"],
       "@store/*": ["./src/store/*"],
-      "@shared/*": ["../shared/*"]
+      "@shared/*": ["../shared/*"],
+      "@/*": ["./src/*"]
     },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

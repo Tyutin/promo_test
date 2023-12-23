@@ -1,16 +1,18 @@
+@import '../../assets/styles/variables.scss';
+
 .shop-layout {
-  max-width: 1260px;
   min-height: 100vh;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
 
   &__page {
     flex-grow: 1;
-    padding: 30px 10px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px 30px;
 
-    @media (max-width: 676px) {
-      padding: 20px 5px;
+    @media (max-width: ($TABLET_SHORT_WIDTH - 1px)) {
+      padding: 10px 10px;
     }
   }
 }
