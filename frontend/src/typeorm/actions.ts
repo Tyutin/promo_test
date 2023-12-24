@@ -26,7 +26,7 @@ export async function createAuthRequestAction() {
 export async function loginByRequestId(authRequestId:string): Promise<boolean> {
   const userAndSession = await adapter.getUserAndSessionByAuthRequestId(authRequestId)
   if(!userAndSession) return false
-  const {user, session: dbSession} = userAndSession
+  const {session: dbSession} = userAndSession
   const session = await getSession();
   session.sessionToken = dbSession.sessionToken
   session.isLoggedIn = true;
