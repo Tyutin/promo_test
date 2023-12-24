@@ -1,12 +1,12 @@
 FROM node:18.19.0
-RUN mkdir /app
 
-WORKDIR /app
+WORKDIR /app/backend
 
-COPY package.json yarn.lock ./
+COPY ./backend/package.json ./backend/yarn.lock /app/backend/
 RUN yarn install --frozen-lockfile
 
-COPY . .
+COPY ./backend /app/backend/
+COPY ./.env /app/backend/
 
 RUN yarn build:prod
 

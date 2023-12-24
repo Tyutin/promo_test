@@ -18,7 +18,7 @@ export async function createAuthRequestAction() {
     maxAge: 86400,
     httpOnly: true,
     sameSite: 'strict',
-    // secure: true TODO: проверка на https
+    secure: process.env.NODE_ENV === 'production'
   })
   return authRequest.id
 }

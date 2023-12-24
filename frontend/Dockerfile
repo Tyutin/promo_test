@@ -28,15 +28,12 @@ COPY backend/yarn.lock /app/backend/yarn.lock
 COPY shared /app/shared
 
 WORKDIR /app/frontend
-ENV NEXT_TELEMETRY_DISABLED 1
-ENV NEXT_OUTPUT standalone
+COPY .env /app/frontend
 RUN yarn build:prod
 
 # Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/frontend/public ./public
@@ -48,4 +45,5 @@ USER nextjs
 EXPOSE 3000
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
+COPY .env /app
 CMD ["node", "server.js"]

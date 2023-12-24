@@ -1,6 +1,7 @@
 version: "3"
 services:
   promo_db:
+    restart: always
     container_name: promo_db
     ports:
       - "5432:5432"
@@ -9,13 +10,14 @@ services:
       - POSTGRES_PASSWORD=NijO9faBZgKjRvA
       - POSTGRES_DB=promo_db
     image: postgres:15.4-alpine3.17
-    restart: always
     networks:
       - app-network
 
   backend:
+    restart: always
     build:
-      context: ./backend
+      context: ./
+      dockerfile: ./backend/Dockerfile
     ports:
       - "3001:3001"
     networks:
@@ -29,6 +31,7 @@ services:
         max-file: "3"
 
   frontend:
+    restart: always
     build:
       context: ./
       dockerfile: ./frontend/Dockerfile
