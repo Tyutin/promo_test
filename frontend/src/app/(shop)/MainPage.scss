@@ -1,0 +1,18 @@
+@import '../../assets/styles/variables.scss';
+
+.main-page {
+  display: flex;
+  flex-direction: column;
+
+  &__banner-section {
+    padding: 0 20px;
+
+    @media (max-width: ($TABLET_LONG_WIDTH - 1)) {
+      padding: 10px 20px 0;
+    }
+
+    @media (max-width: $MOBILE_LARGE_WIDTH) {
+      padding: 10px 0 0;
+    }
+  }
+}

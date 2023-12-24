@@ -1,13 +1,12 @@
-import './ShopPage.scss';
-import { getSession } from '../../typeorm/getSession';
+import './MainPage.scss';
+import Banner from '@shopComponents/Banner/Banner';
 
-export default async function Home() {
-  const session = await getSession();
+export default async function MainPage() {
   return (
-    <div className="shop-page">
-      О нас
-      <br />
-      {JSON.stringify(session.isLoggedIn)}
+    <div className="main-page">
+      <section className="main-page__banner-section">
+        <Banner />
+      </section>
     </div>
   );
 }
