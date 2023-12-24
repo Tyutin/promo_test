@@ -91,5 +91,11 @@
     @media (max-width: $TABLET_LONG_WIDTH) {
       font-size: 20px;
     }
+
+    & a {
+      color: $ORANGE;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
   }
 }
