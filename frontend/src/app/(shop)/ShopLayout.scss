@@ -14,5 +14,11 @@
     @media (max-width: ($TABLET_SHORT_WIDTH - 1px)) {
       padding: 10px 10px;
     }
+
+    & a {
+      color: $ORANGE;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
   }
 }

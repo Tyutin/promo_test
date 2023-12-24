@@ -47,6 +47,22 @@ ul {
   list-style: none;
 }
 
+a {
+  cursor: pointer;
+}
+
 .container {
   max-width: $SHOP_LAYOUT_MAX_WIDTH;
+}
+
+.hide-less-tablet {
+  @media (max-width: ($TABLET_SHORT_WIDTH - 1px)) {
+    display: none !important;
+  }
+}
+
+.hide-tablet-and-more {
+  @media (min-width: $TABLET_SHORT_WIDTH) {
+    display: none !important;
+  }
 }

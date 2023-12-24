@@ -1,0 +1,95 @@
+@import '../../../assets/styles/variables.scss';
+
+.how-page {
+  display: flex;
+  flex-direction: column;
+
+  &__auth-link {
+    color: $ORANGE;
+    cursor: pointer;
+  }
+
+  &__step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 40px;
+
+    @media (max-width: $TABLET_LONG_WIDTH) {
+      gap: 30px;
+    }
+
+    @media (max-width: ($TABLET_SHORT_WIDTH - 1px)) {
+      padding-top: 20px;
+    }
+  }
+
+  &__step {
+    display: flex;
+    gap: 20px;
+
+    @media (max-width: ($TABLET_SHORT_WIDTH - 1px)) {
+      align-items: baseline;
+    }
+
+    @media (max-width: $MOBILE_LARGE_WIDTH) {
+      gap: 8px;
+    }
+
+    &_reverse {
+      @media (min-width: $TABLET_SHORT_WIDTH) {
+        flex-direction: row-reverse;
+      }
+    }
+  }
+
+  &__step-image {
+    width: 320px;
+    margin-top: -25px;
+  }
+
+  &__step-number {
+    display: inline;
+    margin-right: 10px;
+
+    @media (max-width: $MOBILE_LARGE_WIDTH) {
+      margin-right: 5px;
+      width: 26px;
+    }
+  }
+
+  &__step-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 650px;
+
+    @media (max-width: $MOBILE_LARGE_WIDTH) {
+      gap: 12px;
+    }
+  }
+
+  &__step-title {
+    font-size: 40px;
+    font-weight: 500;
+
+    @media (max-width: $TABLET_LONG_WIDTH) {
+      font-size: 35px;
+    }
+
+    @media (max-width: $MOBILE_LARGE_WIDTH) {
+      font-size: 26px;
+    }
+  }
+
+  &__step-text {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-size: 22px;
+
+    @media (max-width: $TABLET_LONG_WIDTH) {
+      font-size: 20px;
+    }
+  }
+}
