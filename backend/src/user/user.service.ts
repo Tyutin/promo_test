@@ -64,11 +64,23 @@ export class UserService {
     return await this.sessionRepository.save(session);
   }
 
-  async setRefPromoToUser(
-    user: UserEntity,
-    promocode: string,
-  ): Promise<UserEntity> {
-    user.ref_promocode = promocode;
-    return await this.userRepository.save(user);
+  async getUserBySessionToken(token: string): Promise<UserEntity | null> {
+    const session = await this.sessionRepository.findOne({
+      where: {
+        sessionToken: token,
+      },
+      relations: {
+        user: true,
+      },
+    });
+    if (!session || !session.user) {
+      return null;
+    }
+    return session.user;
+  }
+
+  async getUserById(userId: string): Promise<UserEntity | null> {
+    const user = this.userRepository.findOneBy({ id: userId });
+    return user;
   }
 }

@@ -1,4 +1,5 @@
 import { Command, Ctx, InjectBot, Start, Update } from 'nestjs-telegraf';
+import { PromocodeService } from 'src/promocode/promocode.service';
 import { UserService } from 'src/user/user.service';
 import { Context, Telegraf } from 'telegraf';
 
@@ -7,6 +8,7 @@ export class TelegramService {
   constructor(
     @InjectBot() private readonly bot: Telegraf<Context>,
     private readonly userService: UserService,
+    private readonly promocoeService: PromocodeService,
   ) {}
 
   @Start()
@@ -20,10 +22,12 @@ export class TelegramService {
     if (!authRequest) return;
 
     if (authRequest.ref_promocode && !user.ref_promocode) {
-      user = await this.userService.setRefPromoToUser(
-        user,
+      const promocode = await this.promocoeService.getPromocodeByCode(
         authRequest.ref_promocode,
       );
+      if (promocode) {
+        user = await this.promocoeService.setRefPromoToUser(user, promocode);
+      }
     }
     await this.userService.createUserSession(user, authRequest);
   }

@@ -1,3 +1,4 @@
+import { PromocodeEntity } from '../promocode/promocode.entity';
 import {
   Column,
   Entity,
@@ -33,11 +34,23 @@ export class UserEntity {
   @Column({ nullable: true })
   language_code?: string;
 
-  @Column({ nullable: true })
-  ref_promocode!: string;
-
   @OneToMany(() => SessionEntity, (session) => session.user)
   sessions!: Relation<SessionEntity>[];
+
+  @OneToMany(() => PromocodeEntity, (promocode) => promocode.owner, {
+    eager: true,
+  })
+  promocodes: Relation<SessionEntity>[];
+
+  @OneToOne(() => PromocodeEntity, { nullable: true })
+  @JoinColumn()
+  ref_promocode: Relation<PromocodeEntity>;
+
+  @Column({ default: 'user' })
+  role: 'user' | 'admin' | 'affiliate';
+
+  @Column({ default: false })
+  banned: boolean;
 }
 
 @Entity('sessions')

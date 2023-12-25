@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -6,6 +6,11 @@ import postgresConfig from '../dataSource/dataSource.config';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { TelegramModule } from './telegram/telegram.module';
+import { PromocodeModule } from './promocode/promocode.module';
+import { AuthSecretMiddleware } from './user/middlewares/authSecret.middleware';
+import { UserMiddleware } from './user/middlewares/user.middleware';
+import { IsAdminMiddleware } from './user/middlewares/IsAdmin.middleware';
+import { IsAffiliateMiddleware } from './user/middlewares/IsAffiliate.middleware';
 
 @Module({
   imports: [
@@ -13,15 +18,23 @@ import { TelegramModule } from './telegram/telegram.module';
     ConfigModule.forRoot({ isGlobal: true }),
     UserModule,
     TelegramModule,
+    PromocodeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
-  // configure(consumer: MiddlewareConsumer) {
-  //   consumer.apply(AuthSecretMiddleware, UserMiddleware).forRoutes({
-  //     path: '*',
-  //     method: RequestMethod.ALL,
-  //   });
-  // }
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(
+        AuthSecretMiddleware,
+        UserMiddleware,
+        IsAdminMiddleware,
+        IsAffiliateMiddleware,
+      )
+      .forRoutes({
+        path: '*',
+        method: RequestMethod.ALL,
+      });
+  }
 }

@@ -15,7 +15,7 @@ export async function createAuthRequestAction() {
   }
   const authRequest = await adapter.createAuthRequest(cookiesList.get('promocode')?.value)
   cookiesList.set('authRequestId', authRequest.id, {
-    maxAge: 86400,
+    maxAge: 3600,
     httpOnly: true,
     sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production'

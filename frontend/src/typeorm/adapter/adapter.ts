@@ -1,8 +1,9 @@
 import { DataSourceOptions, DataSource, EntityManager } from 'typeorm'
 import { parseDataSourceConfig, updateConnectionEntities } from './utils'
 import { AuthRequestEntity, SessionEntity, UserEntity } from '../../../../backend/src/user/user.entity'
+import { PromocodeEntity } from '../../../../backend/src/promocode/promocode.entity';
 
-export const entities = { AuthRequestEntity, SessionEntity, UserEntity }
+export const entities = { AuthRequestEntity, SessionEntity, UserEntity, PromocodeEntity }
 export type Entities = typeof entities
 
 let _dataSource: DataSource | undefined
@@ -40,14 +41,14 @@ export function TypeORMAdapter(
     entities: Entities
   } = {
     dataSource,
-    entities: {UserEntity,SessionEntity,AuthRequestEntity,},
+    entities: {UserEntity,SessionEntity,AuthRequestEntity, PromocodeEntity},
   }
 
   return {
     async createAuthRequest(promocode?: string): Promise<AuthRequestEntity> {
       const m = await getManager(c)
       const data: Partial<AuthRequestEntity> = {
-        expires: new Date(new Date().setDate(new Date().getDate() + 1)).getTime().toString(),
+        expires: new Date(new Date().setHours(new Date().getHours() + 1)).getTime().toString(),
         ref_promocode: promocode
       }
       const authRequest = Object.assign({}, new AuthRequestEntity(), data)      
