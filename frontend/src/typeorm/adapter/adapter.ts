@@ -86,6 +86,32 @@ export function TypeORMAdapter(
       })
       if (!session) return null
       return session.user
+    },
+
+    async getPromocodeByCode(code: string): Promise<PromocodeEntity | null> {
+      const m = await getManager(c)
+      return await m.findOne(PromocodeEntity, {
+        where: {
+          code
+        },
+        relations: {
+          owner: true
+        }
+      })
+    },
+
+    async setRefPromocodeToCurrentUser(sessionToken: string, code: string): Promise<void> {
+      const m = await getManager(c)
+      const user = await this.getUserBySessionToken(sessionToken)
+      const promocode = await this.getPromocodeByCode(code)
+      if(
+        !promocode || 
+        !user || 
+        promocode?.owner.id === user?.id || 
+        user?.ref_promocode 
+      ) return
+      user.ref_promocode = promocode
+      m.save(UserEntity, user)
     }
     // async getSessionAndUser(sessionToken) {
     //   const m = await getManager(c)

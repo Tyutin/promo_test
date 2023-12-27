@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreatePromocodeDto } from './dto/createPromocode.dto';
 import { UserEntity } from 'src/user/user.entity';
 import { PromocodeResponseInterface } from './types/promocodeResponse.interface';
+import { CreateSelfPromocodeDto } from './dto/createSelfPromocode.dto';
 
 @Injectable()
 export class PromocodeService {
@@ -20,9 +21,15 @@ export class PromocodeService {
   }
 
   async createPromocode(
-    createPromocodeDto: CreatePromocodeDto,
+    createPromocodeDto: CreatePromocodeDto | CreateSelfPromocodeDto,
     user: UserEntity,
   ): Promise<PromocodeEntity> {
+    const alreadyExistingPromocode = await this.promocodeRepository.findOneBy({
+      code: createPromocodeDto.code,
+    });
+    if (!!alreadyExistingPromocode) {
+      throw new UnprocessableEntityException();
+    }
     const promocode: PromocodeEntity = Object.assign(
       {},
       new PromocodeEntity(),

@@ -4,6 +4,7 @@ import '@assets/styles/global.scss';
 import './ShopLayout.scss';
 import Header from '@shopComponents/Header/Header';
 import { getSession } from '@/typeorm/getSession';
+import RefCodeHandler from '@shopComponents/RefCodeHandler/RefCodeHandler';
 
 const montserrat = Inter({ subsets: ['latin', 'cyrillic', 'cyrillic-ext'] });
 
@@ -26,6 +27,7 @@ export default async function RootLayout({
           <main className="container shop-layout__page">{children}</main>
         </div>
       </body>
+      <RefCodeHandler />
     </html>
   );
 }

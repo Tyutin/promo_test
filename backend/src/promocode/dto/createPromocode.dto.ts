@@ -13,8 +13,8 @@ export class CreatePromocodeDto {
   code: string;
 
   @IsString()
-  @IsOptional()
-  userId?: string;
+  @IsNotEmpty()
+  userId: string;
 
   @IsOptional()
   @IsInt()

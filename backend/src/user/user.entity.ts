@@ -34,6 +34,12 @@ export class UserEntity {
   @Column({ nullable: true })
   language_code?: string;
 
+  @Column({ default: 'user' })
+  role: 'user' | 'admin' | 'affiliate';
+
+  @Column({ default: false })
+  banned: boolean;
+
   @OneToMany(() => SessionEntity, (session) => session.user)
   sessions!: Relation<SessionEntity>[];
 
@@ -42,15 +48,9 @@ export class UserEntity {
   })
   promocodes: Relation<SessionEntity>[];
 
-  @OneToOne(() => PromocodeEntity, { nullable: true })
+  @OneToOne(() => PromocodeEntity, { nullable: true, eager: true })
   @JoinColumn()
   ref_promocode: Relation<PromocodeEntity>;
-
-  @Column({ default: 'user' })
-  role: 'user' | 'admin' | 'affiliate';
-
-  @Column({ default: false })
-  banned: boolean;
 }
 
 @Entity('sessions')

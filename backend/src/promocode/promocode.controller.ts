@@ -2,20 +2,19 @@ import {
   Body,
   Controller,
   Post,
-  UnprocessableEntityException,
   UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { AdminOrSecretOrAffiliateGuard } from 'src/user/guards/adminOrSecretOrAffiliate.guard';
 import { CreatePromocodeDto } from './dto/createPromocode.dto';
 import { PromocodeService } from './promocode.service';
 import { User } from 'src/user/decorators/user.decorator';
 import { UserEntity } from 'src/user/user.entity';
-import { IsAuthBySecret } from 'src/user/decorators/isAuthBySecret.decorator';
-import { IsAdmin } from 'src/user/decorators/isAdmin.decorator';
 import { UserService } from 'src/user/user.service';
-import { IsAffiliate } from 'src/user/decorators/isAffiliate.decorator';
+import { CreateSelfPromocodeDto } from './dto/createSelfPromocode.dto';
+import { AffiliateGuard } from 'src/user/guards/affilate.guard';
+import { PromocodeResponseInterface } from './types/promocodeResponse.interface';
+import { AdminOrSecretGuard } from 'src/user/guards/adminOrSecret.guard';
 
 @Controller('/promocode')
 export class PromocodeController {
@@ -26,32 +25,28 @@ export class PromocodeController {
     this.promocodeService = promocodeService;
     this.userService = userService;
   }
-  @Post()
+
+  @Post('/create-self')
   @UsePipes(new ValidationPipe())
-  @UseGuards(AdminOrSecretOrAffiliateGuard)
-  async createPromocode(
+  @UseGuards(AffiliateGuard)
+  async newSelfPromocode(
+    @Body('promocode') createSelfPromocodeDto: CreateSelfPromocodeDto,
+    @User() user: UserEntity,
+  ): Promise<PromocodeResponseInterface> {
+    const promocode = await this.promocodeService.createPromocode(
+      createSelfPromocodeDto,
+      user,
+    );
+    return this.promocodeService.buildPromocodeResponse(promocode);
+  }
+
+  @Post('create')
+  @UsePipes(new ValidationPipe())
+  @UseGuards(AdminOrSecretGuard)
+  async newUserPromocode(
     @Body('promocode') createPromocodeDto: CreatePromocodeDto,
-    @User() userByRequest: UserEntity,
-    @IsAuthBySecret() isAuthBySecret: boolean,
-    @IsAdmin() isAdmin: boolean,
-    @IsAffiliate() isAffiliate: boolean,
-  ) {
-    let user: UserEntity;
-    user = userByRequest;
-    if ((isAdmin || isAuthBySecret) && createPromocodeDto.userId) {
-      user = await this.userService.getUserById(createPromocodeDto.userId);
-    }
-    if (!user) {
-      throw new UnprocessableEntityException('Пользователь не найден');
-    }
-    if (!user || user.role === 'user') {
-      throw new UnprocessableEntityException(
-        'Обычному пользователю нельзя создать промокод',
-      );
-    }
-    if (isAffiliate) {
-      delete createPromocodeDto.commission;
-    }
+  ): Promise<PromocodeResponseInterface> {
+    const user = await this.userService.getUserById(createPromocodeDto.userId);
     const promocode = await this.promocodeService.createPromocode(
       createPromocodeDto,
       user,

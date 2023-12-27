@@ -1,5 +1,6 @@
 import { SessionOptions } from 'iron-session';
 import { UserEntity } from '../../../backend/src/user/user.entity';
+import { SESSION_COOKIE_NAME } from '@/constants/cookies';
 
 export interface SessionData {
   isLoggedIn: boolean;
@@ -14,7 +15,7 @@ export const defaultSession: SessionData = {
 
 export const sessionOptions: SessionOptions = {
   password: 'XLNI4RGVdajwCiZ9Vn6Ey0ShpMAAtALl',
-  cookieName: 'is_session',
+  cookieName: SESSION_COOKIE_NAME,
   cookieOptions: {
     secure: process.env.NODE_ENV === 'production'
   },

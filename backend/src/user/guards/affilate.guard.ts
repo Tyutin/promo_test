@@ -8,6 +8,6 @@ export class AffiliateGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest<CustomRequestInterface>();
-    return request.isAffiliate;
+    return request.isAffiliate || request.isAdmin;
   }
 }
