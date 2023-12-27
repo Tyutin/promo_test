@@ -14,7 +14,7 @@ export const defaultSession: SessionData = {
 };
 
 export const sessionOptions: SessionOptions = {
-  password: 'XLNI4RGVdajwCiZ9Vn6Ey0ShpMAAtALl',
+  password: process.env.IRON_SESSION_PASSWORD || 'XLNI4RGVdajwCiZfaggDy0ShpMAAtALl',
   cookieName: SESSION_COOKIE_NAME,
   cookieOptions: {
     secure: process.env.NODE_ENV === 'production'
