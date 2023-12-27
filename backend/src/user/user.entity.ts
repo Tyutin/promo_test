@@ -10,9 +10,12 @@ import {
 } from 'typeorm';
 
 import type { Relation } from 'typeorm';
+import { UserEntityInterface } from './types/UserEntity.interface';
+import { SessionEntityInterface } from './types/SessionEntity.interface';
+import { AuthRequestEntityInterface } from './types/AuthRequestEntity.interface';
 
 @Entity('users')
-export class UserEntity {
+export class UserEntity implements UserEntityInterface {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -46,7 +49,7 @@ export class UserEntity {
   @OneToMany(() => PromocodeEntity, (promocode) => promocode.owner, {
     eager: true,
   })
-  promocodes: Relation<SessionEntity>[];
+  promocodes: Relation<PromocodeEntity>[];
 
   @OneToOne(() => PromocodeEntity, { nullable: true, eager: true })
   @JoinColumn()
@@ -54,7 +57,7 @@ export class UserEntity {
 }
 
 @Entity('sessions')
-export class SessionEntity {
+export class SessionEntity implements SessionEntityInterface {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -73,7 +76,7 @@ export class SessionEntity {
 }
 
 @Entity('authRequests')
-export class AuthRequestEntity {
+export class AuthRequestEntity implements AuthRequestEntityInterface {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 

@@ -1,9 +1,10 @@
 import { UserEntity } from '../user/user.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import type { Relation } from 'typeorm';
+import { PromocodeEntityInterface } from './types/PromocodeEntity.interface';
 
 @Entity('promocodes')
-export class PromocodeEntity {
+export class PromocodeEntity implements PromocodeEntityInterface {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
