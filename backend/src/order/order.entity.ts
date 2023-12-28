@@ -2,9 +2,7 @@ import {
   BeforeUpdate,
   Column,
   Entity,
-  JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import type { Relation } from 'typeorm';
@@ -60,11 +58,10 @@ export class OrderEntity implements OrderEntityInterface {
   @Column({ nullable: true })
   currentLocation?: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.orders)
+  @ManyToOne(() => UserEntity, (user) => user.orders, { eager: true })
   user: Relation<UserEntity>;
 
-  @OneToOne(() => UserEntity)
-  @JoinColumn()
+  @ManyToOne(() => UserEntity, (user) => user.createdOrders, { eager: true })
   createdBy: Relation<UserEntity>;
 
   @BeforeUpdate()

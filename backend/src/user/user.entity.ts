@@ -64,10 +64,11 @@ export class UserEntity implements UserEntityInterface {
   @JoinColumn()
   ref_promocode: Relation<PromocodeEntity>;
 
-  @OneToMany(() => OrderEntity, (order) => order.user, {
-    eager: true,
-  })
+  @OneToMany(() => OrderEntity, (order) => order.user)
   orders: Relation<OrderEntity>[];
+
+  @OneToMany(() => OrderEntity, (order) => order.createdBy)
+  createdOrders: Relation<OrderEntity>[];
 }
 
 @Entity('sessions')
