@@ -1,3 +1,5 @@
+import {UserRole} from './userRole'
+
 export interface UserRawInterface {
   id: string;
   telegramId: number;
@@ -6,6 +8,7 @@ export interface UserRawInterface {
   last_name?: string;
   username?: string;
   language_code?: string;
-  role: 'user' | 'admin' | 'affiliate';
+  role: UserRole;
   banned: boolean;
+  phone: string;
 }

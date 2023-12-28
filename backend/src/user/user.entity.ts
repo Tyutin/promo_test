@@ -14,6 +14,7 @@ import { UserEntityInterface } from './types/UserEntity.interface';
 import { SessionEntityInterface } from './types/SessionEntity.interface';
 import { AuthRequestEntityInterface } from './types/AuthRequestEntity.interface';
 import { OrderEntity } from '../order/order.entity';
+import { UserRole } from '../../../shared/types/User/userRole';
 
 @Entity('users')
 export class UserEntity implements UserEntityInterface {
@@ -38,11 +39,18 @@ export class UserEntity implements UserEntityInterface {
   @Column({ nullable: true })
   language_code?: string;
 
-  @Column({ default: 'user' })
-  role: 'user' | 'admin' | 'affiliate';
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.user,
+  })
+  role: UserRole;
 
   @Column({ default: false })
   banned: boolean;
+
+  @Column({ nullable: true })
+  phone: string;
 
   @OneToMany(() => SessionEntity, (session) => session.user)
   sessions!: Relation<SessionEntity>[];

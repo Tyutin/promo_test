@@ -1,4 +1,4 @@
-import { UserEntityInterface } from "@shared/types/User/front/UserEntity.interface";
+import { UserEntityInterface } from "../../User/front/UserEntity.interface";
 import { OrderRawInterface } from "../OrderRaw.interface";
 import { OrderStatus } from "../orderStatus";
 
