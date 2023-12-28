@@ -43,7 +43,9 @@ export class UserService {
   ): Promise<SessionEntity> {
     const alreadyExistingSession = await this.sessionRepository.findOne({
       where: {
-        user,
+        user: {
+          id: user.id,
+        },
         authRequest,
       },
       relations: {
@@ -79,8 +81,7 @@ export class UserService {
     return session.user;
   }
 
-  async getUserById(userId: string): Promise<UserEntity | null> {
-    const user = this.userRepository.findOneBy({ id: userId });
-    return user;
+  async getUserById(id: string): Promise<UserEntity | null> {
+    return await this.userRepository.findOneBy({ id });
   }
 }

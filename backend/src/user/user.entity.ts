@@ -13,6 +13,7 @@ import type { Relation } from 'typeorm';
 import { UserEntityInterface } from './types/UserEntity.interface';
 import { SessionEntityInterface } from './types/SessionEntity.interface';
 import { AuthRequestEntityInterface } from './types/AuthRequestEntity.interface';
+import { OrderEntity } from '../order/order.entity';
 
 @Entity('users')
 export class UserEntity implements UserEntityInterface {
@@ -54,6 +55,11 @@ export class UserEntity implements UserEntityInterface {
   @OneToOne(() => PromocodeEntity, { nullable: true, eager: true })
   @JoinColumn()
   ref_promocode: Relation<PromocodeEntity>;
+
+  @OneToMany(() => OrderEntity, (order) => order.user, {
+    eager: true,
+  })
+  orders: Relation<OrderEntity>[];
 }
 
 @Entity('sessions')

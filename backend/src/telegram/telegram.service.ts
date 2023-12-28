@@ -31,9 +31,4 @@ export class TelegramService {
     }
     await this.userService.createUserSession(user, authRequest);
   }
-
-  @Command('start')
-  async onCommand() {
-    console.log('oncommand');
-  }
 }

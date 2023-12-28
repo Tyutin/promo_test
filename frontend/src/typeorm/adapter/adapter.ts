@@ -2,8 +2,9 @@ import { DataSourceOptions, DataSource, EntityManager } from 'typeorm'
 import { parseDataSourceConfig, updateConnectionEntities } from './utils'
 import { AuthRequestEntity, SessionEntity, UserEntity } from '../../../../backend/src/user/user.entity'
 import { PromocodeEntity } from '../../../../backend/src/promocode/promocode.entity';
+import { OrderEntity } from '../../../../backend/src/order/order.entity';
 
-export const entities = { AuthRequestEntity, SessionEntity, UserEntity, PromocodeEntity }
+export const entities = { AuthRequestEntity, SessionEntity, UserEntity, PromocodeEntity, OrderEntity }
 export type Entities = typeof entities
 
 let _dataSource: DataSource | undefined
@@ -41,7 +42,7 @@ export function TypeORMAdapter(
     entities: Entities
   } = {
     dataSource,
-    entities: {UserEntity,SessionEntity,AuthRequestEntity, PromocodeEntity},
+    entities: {UserEntity,SessionEntity,AuthRequestEntity, PromocodeEntity, OrderEntity},
   }
 
   return {

@@ -11,6 +11,7 @@ import { AuthSecretMiddleware } from './user/middlewares/authSecret.middleware';
 import { UserMiddleware } from './user/middlewares/user.middleware';
 import { IsAdminMiddleware } from './user/middlewares/IsAdmin.middleware';
 import { IsAffiliateMiddleware } from './user/middlewares/IsAffiliate.middleware';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { IsAffiliateMiddleware } from './user/middlewares/IsAffiliate.middleware
     UserModule,
     TelegramModule,
     PromocodeModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
