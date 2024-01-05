@@ -18,34 +18,14 @@ module.exports = {
 
     return config;
   },
-  async rewrites(){
-    return [
-      {
-        source: `/${encodeURIComponent('акции')}`,
-        destination: `/promo`,
-      },
-      {
-        source: `/${encodeURIComponent('условия-доставки')}`,
-        destination: `/delivery`,
-      },
-      {
-        source: `/${encodeURIComponent('о-компании')}`,
-        destination: `/about`,
-      },
-      {
-        source: `/${encodeURIComponent('корзина')}`,
-        destination: `/cart`,
-      },
-      {
-        source: `/${encodeURIComponent('оформление-заказа')}`,
-        destination: `/checkout`,
-      },
-      {
-        source: `/${encodeURIComponent('профиль')}`,
-        destination: `/profile`,
-      },
-    ]
-  },
+  // async rewrites(){
+  //   return [
+  //     {
+  //       source: `/${encodeURIComponent('акции')}`,
+  //       destination: `/promo`,
+  //     },
+  //   ]
+  // },
   ...(process.env.NEXT_OUTPUT ? {output: process.env.NEXT_OUTPUT} : {})
 }
 
