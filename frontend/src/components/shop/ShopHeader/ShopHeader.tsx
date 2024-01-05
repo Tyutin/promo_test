@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '@commonComponents/Button/Button';
-import './Header.scss';
+import './ShopHeader.scss';
 import LoginButton from '@shopComponents/LoginButton/LoginButton';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -13,7 +13,7 @@ type HeaderProps = {
   isLoggedIn: boolean;
 };
 
-export default function Header({ isLoggedIn }: HeaderProps) {
+export default function ShopHeader({ isLoggedIn }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const openMenu = () => {
     setIsMenuOpen(true);
@@ -42,32 +42,32 @@ export default function Header({ isLoggedIn }: HeaderProps) {
   }, [isMobile]);
 
   return (
-    <header className="header">
-      <div className="container header__container">
-        <Link href="/" className="header__company">
+    <header className="shop-header">
+      <div className="container shop-header__container">
+        <Link href="/" className="shop-header__company">
           DELIVERY.GO
         </Link>
         <Button
           theme="orange"
           additionalClasses={[
-            'header__contact-us-button',
-            'header__element_hide-less-tablet',
+            'shop-header__contact-us-button',
+            'shop-header__element_hide-less-tablet',
           ]}
         >
           Связаться с нами
         </Button>
-        <div className="header__controls">
+        <div className="shop-header__controls">
           <Nav
             isLoggedIn={isLoggedIn}
-            className="header__element_hide-less-tablet"
+            className="shop-header__element_hide-less-tablet"
             pathname={pathname}
           />
           {!isLoggedIn && <LoginButton />}
           <button
             onClick={toggleHandler}
             className={classNames(
-              'header__toggle',
-              isMenuOpen && 'header__toggle_active'
+              'shop-header__toggle',
+              isMenuOpen && 'shop-header__toggle_active'
             )}
           />
         </div>
@@ -75,14 +75,14 @@ export default function Header({ isLoggedIn }: HeaderProps) {
       {isMenuOpen && (
         <div
           className={classNames(
-            'header__mobile-nav',
-            isMenuOpen && 'header__mobile-nav_active'
+            'shop-header__mobile-nav',
+            isMenuOpen && 'shop-header__mobile-nav_active'
           )}
         >
           <Nav isLoggedIn={isLoggedIn} pathname={pathname} />
           <Button
             theme="orange"
-            additionalClasses={'header__contact-us-button'}
+            additionalClasses={'shop-header__contact-us-button'}
           >
             Связаться с нами
           </Button>
@@ -102,24 +102,26 @@ function Nav({
   pathname: string;
 }) {
   return (
-    <nav className={classNames('header__nav', className)}>
-      <ul className="header__nav-list">
-        <li className="header__nav-element">
+    <nav className={classNames('shop-header__nav', className)}>
+      <ul className="shop-header__nav-list">
+        <li className="shop-header__nav-element">
           <Link
             className={
-              pathname === '/' ? 'header__active-link' : 'header__link'
+              pathname === '/'
+                ? 'shop-header__active-link'
+                : 'shop-header__link'
             }
             href="/"
           >
             О нас
           </Link>
         </li>
-        <li className="header__nav-element">
+        <li className="shop-header__nav-element">
           <Link
             className={
               pathname === '/how-it-works'
-                ? 'header__active-link'
-                : 'header__link'
+                ? 'shop-header__active-link'
+                : 'shop-header__link'
             }
             href="/how-it-works"
           >
@@ -127,10 +129,12 @@ function Nav({
           </Link>
         </li>
         {isLoggedIn && (
-          <li className="header__nav-element">
+          <li className="shop-header__nav-element">
             <Link
               className={
-                pathname === '/profile' ? 'header__active-link' : 'header__link'
+                pathname === '/profile'
+                  ? 'shop-header__active-link'
+                  : 'shop-header__link'
               }
               href="/profile"
             >

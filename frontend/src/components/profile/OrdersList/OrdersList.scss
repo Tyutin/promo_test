@@ -1,0 +1,27 @@
+@import '../../../assets/styles/variables.scss';
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-radius: 15px;
+
+  @media (max-width: $TABLET_LONG_WIDTH) {
+    padding: 0;
+  }
+
+  &__element {
+    border: 2px solid #fff;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 6px 6px 10px 3px rgba(208, 205, 221, 0.5);
+    transition: all .3s ease;
+
+    &:hover {
+      @media (min-width: ($TABLET_LONG_WIDTH + 1)) {
+        box-shadow: none;
+        border: 2px solid $ORANGE;
+      }
+    }
+  }
+}

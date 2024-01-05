@@ -47,4 +47,8 @@ export class CreateOrderDto {
   @IsOptional()
   @IsDate()
   estimatedDeliveryTime?: Date;
+
+  @IsOptional()
+  @IsString()
+  name?: string;
 }

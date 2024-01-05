@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@assets/styles/global.scss';
-import './ShopLayout.scss';
-import ShopHeader from '@shopComponents/ShopHeader/ShopHeader';
+import './ProfileLayout.scss';
+import ProfileHeader from '@profileComponents/ProfileHeader/ProfileHeader';
 import { getSession } from '@/typeorm/getSession';
 import RefCodeHandler from '@shopComponents/RefCodeHandler/RefCodeHandler';
+import { redirect } from 'next/navigation';
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 
 const montserrat = Inter({ subsets: ['latin', 'cyrillic', 'cyrillic-ext'] });
 
@@ -19,13 +21,19 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getSession();
+  if (!session.isLoggedIn) {
+    redirect('/');
+  }
+
   return (
     <html lang="ru">
       <body className={montserrat.className}>
-        <div className="shop-layout">
-          <ShopHeader isLoggedIn={session.isLoggedIn} />
-          <main className="container shop-layout__page">{children}</main>
-        </div>
+        <AntdRegistry>
+          <div className="profile-layout">
+            <ProfileHeader />
+            <main className="container profile-layout__page">{children}</main>
+          </div>
+        </AntdRegistry>
       </body>
       <RefCodeHandler />
     </html>

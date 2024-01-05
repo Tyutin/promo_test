@@ -1,8 +1,10 @@
+import { OrderStatus } from "./orderStatus";
+
 export interface OrderRawInterface {
   id: string;
   createdAt: Date;
   updatedAt: Date;
-  status: string;
+  status: OrderStatus;
   deliveryAddress: string;
   productPrice: number;
   shippingPrice: number;
@@ -13,4 +15,5 @@ export interface OrderRawInterface {
   estimatedDeliveryTime: Date;
   cancelReason?: string;
   currentLocation?: string;
+  name?: string;
 }

@@ -1,0 +1,10 @@
+@import '../../../assets/styles/variables.scss';
+
+.login-button {
+  font-size: 14px;
+
+  @media (min-width: $TABLET_SHORT_WIDTH) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

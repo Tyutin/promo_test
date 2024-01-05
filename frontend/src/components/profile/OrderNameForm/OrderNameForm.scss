@@ -1,0 +1,11 @@
+.order-name-form {
+  align-items: center;
+
+  &__submit {
+    padding: 6px 10px;
+  }
+
+  &__label {
+    flex-grow: 1;
+  }
+}

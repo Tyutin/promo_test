@@ -1,6 +1,6 @@
 @import '../../../assets/styles/variables.scss';
 
-.header {
+.shop-header {
   display: flex;
   justify-content: center;
   width: 100%;
@@ -150,8 +150,4 @@
     }
   }
 
-}
-
-.header-mobile-menu-open {
-  overflow: hidden;
 }

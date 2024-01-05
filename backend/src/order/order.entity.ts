@@ -58,6 +58,9 @@ export class OrderEntity implements OrderEntityInterface {
   @Column({ nullable: true })
   currentLocation?: string;
 
+  @Column({ nullable: true })
+  name?: string;
+
   @ManyToOne(() => UserEntity, (user) => user.orders, { eager: true })
   user: Relation<UserEntity>;
 

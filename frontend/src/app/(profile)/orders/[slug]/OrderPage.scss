@@ -1,0 +1,30 @@
+@import '../../../../assets/styles/variables.scss';
+
+.order-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__title {
+    margin-bottom: 0;
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    color: $MAIN_GRAY;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 600px;
+  }
+
+  &__order-description-text {
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid $MAIN_COLOR;
+  }
+}

@@ -1,0 +1,27 @@
+@import '../../assets/styles/variables.scss';
+
+.profile-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  &__page {
+    flex-grow: 1;
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+
+    @media (max-width: ($TABLET_SHORT_WIDTH - 1px)) {
+      padding: 20px 10px;
+    }
+  }
+
+  &__title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+}

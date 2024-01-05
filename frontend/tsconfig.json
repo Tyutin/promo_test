@@ -20,6 +20,7 @@
     ],
     "paths": {
       "@shopComponents/*": ["./src/components/shop/*"],
+      "@profileComponents/*": ["./src/components/profile/*"],
       "@commonComponents/*": ["./src/components/common/*"],
       "@adminComponents/*": ["./src/components/admin/*"],
       "@assets/*": ["./src/assets/*"],

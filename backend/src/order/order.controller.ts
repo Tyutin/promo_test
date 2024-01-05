@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  ForbiddenException,
   Get,
   Param,
   Post,
+  Put,
   UnprocessableEntityException,
   UseGuards,
   UsePipes,
@@ -17,6 +19,10 @@ import { UserEntity } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
 import { OrderService } from './order.service';
 import { AuthGuard } from 'src/user/guards/auth.guard';
+import { OrdersResponseInterface } from './types/OrdersResponse.interface';
+import { UpdateMyOrderDto } from './dto/updateMyOrder.dto';
+import { AdminOrSecretGuard } from 'src/user/guards/adminOrSecret.guard';
+import { UpdateOrderDto } from './dto/updateOrder.dto';
 
 @Controller('/orders')
 export class OrderController {
@@ -26,6 +32,15 @@ export class OrderController {
   ) {
     this.orderService = orderService;
     this.userService = userService;
+  }
+
+  @Get('/my')
+  @UseGuards(AuthGuard)
+  async getAllMyOrders(
+    @User('id') currentUserId: string,
+  ): Promise<OrdersResponseInterface> {
+    const orders = await this.orderService.getUsersOrders(currentUserId);
+    return this.orderService.buildOrdersResponse(orders);
   }
 
   @Post('/new')
@@ -47,12 +62,43 @@ export class OrderController {
     return this.orderService.buildOrderResponse(order);
   }
 
-  @Get('/:orderId')
+  @Get('/my/:orderId')
   @UseGuards(AuthGuard)
-  async getOrderById(
+  async getMyOrderById(
     @Param('orderId') orderId: string,
+    @User('id') userId: string,
   ): Promise<OrderResponseInterface> {
     const order = await this.orderService.getOrderById(orderId);
+    if (order.user.id !== userId) {
+      throw new ForbiddenException();
+    }
+    return this.orderService.buildOrderResponse(order);
+  }
+
+  @Put('/my/:orderId')
+  @UsePipes(new ValidationPipe())
+  @UseGuards(AuthGuard)
+  async updateMyOrder(
+    @Param('orderId') orderId: string,
+    @User() user: UserEntity,
+    @Body('order') updateMyOrderDto: UpdateMyOrderDto,
+  ): Promise<OrderResponseInterface> {
+    const order = await this.orderService.updateMyOrder(
+      orderId,
+      updateMyOrderDto,
+      user,
+    );
+    return this.orderService.buildOrderResponse(order);
+  }
+
+  @Put('/:orderId')
+  @UsePipes(new ValidationPipe())
+  @UseGuards(AdminOrSecretGuard)
+  async updateOrder(
+    @Param('orderId') orderId: string,
+    @Body('order') updateOrderDto: UpdateOrderDto,
+  ): Promise<OrderResponseInterface> {
+    const order = await this.orderService.updateOrder(orderId, updateOrderDto);
     return this.orderService.buildOrderResponse(order);
   }
 }
