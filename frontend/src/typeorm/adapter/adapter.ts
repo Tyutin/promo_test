@@ -1,22 +1,19 @@
-import { DataSourceOptions, DataSource, EntityManager } from 'typeorm'
+import { DataSource, EntityManager } from 'typeorm'
 import { parseDataSourceConfig, updateConnectionEntities } from './utils'
 import { AuthRequestEntity, SessionEntity, UserEntity } from '../../../../backend/src/user/user.entity'
 import { PromocodeEntity } from '../../../../backend/src/promocode/promocode.entity';
 import { OrderEntity } from '../../../../backend/src/order/order.entity';
+import dataSourceOptions from '../../../../backend/dataSource/dataSource.config'
 
 export const entities = { AuthRequestEntity, SessionEntity, UserEntity, PromocodeEntity, OrderEntity }
 export type Entities = typeof entities
 
 let _dataSource: DataSource | undefined
 
-export async function getManager(options: {
-  dataSource: string | DataSourceOptions
-  entities: Entities
-}): Promise<EntityManager> {
+export async function getManager(): Promise<EntityManager> {
   if (!_dataSource) {
-    const { dataSource, entities } = options
     const config = {
-      ...parseDataSourceConfig(dataSource),
+      ...parseDataSourceConfig(dataSourceOptions),
       entities: Object.values(entities),
     }
     _dataSource = new DataSource(config)
@@ -29,44 +26,31 @@ export async function getManager(options: {
   }
 
   if (process.env.NODE_ENV !== 'production') {
-    await updateConnectionEntities(_dataSource, Object.values(options.entities))
+    await updateConnectionEntities(_dataSource, Object.values(entities))
   }
   return manager
 }
 
-export function TypeORMAdapter(
-  dataSource: string | DataSourceOptions
-) {
-  const c: {
-    dataSource: string | DataSourceOptions
-    entities: Entities
-  } = {
-    dataSource,
-    entities: {UserEntity,SessionEntity,AuthRequestEntity, PromocodeEntity, OrderEntity},
-  }
-
+export function TypeORMAdapter() {
   return {
     async createAuthRequest(promocode?: string): Promise<AuthRequestEntity> {
-      const m = await getManager(c)
+      const manager = await getManager()
       const data: Partial<AuthRequestEntity> = {
         expires: new Date(new Date().setHours(new Date().getHours() + 1)).getTime().toString(),
         ref_promocode: promocode
       }
       const authRequest = Object.assign({}, new AuthRequestEntity(), data)      
-      const ar = await m.save(AuthRequestEntity, authRequest)
+      const ar = await manager.save(AuthRequestEntity, authRequest)
       return ar
     },
 
     async getUserAndSessionByAuthRequestId(authRequestId: string): Promise<{user: UserEntity, session: Omit<SessionEntity, 'user'>} | null> {
-      const m = await getManager(c)
-      const sessionAndUser = await m.findOne<SessionEntity & {user: UserEntity}>(SessionEntity, {
+      const manager = await getManager()
+      const sessionAndUser = await manager.findOne<SessionEntity & {user: UserEntity}>(SessionEntity, {
         where: {
-          authRequest: {
-            id: authRequestId
-          }
+          authRequestId,
         },
         relations: {
-          authRequest: true,
           user: true
         }
       })
@@ -76,8 +60,8 @@ export function TypeORMAdapter(
     },
 
     async getUserBySessionToken(sessionToken: string): Promise<UserEntity | null> {
-      const m = await getManager(c)
-      const session = await m.findOne(SessionEntity, {
+      const manager = await getManager()
+      const session = await manager.findOne(SessionEntity, {
         where: {
           sessionToken
         },
@@ -90,8 +74,8 @@ export function TypeORMAdapter(
     },
 
     async getPromocodeByCode(code: string): Promise<PromocodeEntity | null> {
-      const m = await getManager(c)
-      return await m.findOne(PromocodeEntity, {
+      const manager = await getManager()
+      return await manager.findOne(PromocodeEntity, {
         where: {
           code
         },
@@ -102,7 +86,7 @@ export function TypeORMAdapter(
     },
 
     async setRefPromocodeToCurrentUser(sessionToken: string, code: string): Promise<void> {
-      const m = await getManager(c)
+      const manager = await getManager()
       const user = await this.getUserBySessionToken(sessionToken)
       const promocode = await this.getPromocodeByCode(code)
       if(
@@ -112,7 +96,7 @@ export function TypeORMAdapter(
         user?.ref_promocode 
       ) return
       user.ref_promocode = promocode
-      m.save(UserEntity, user)
+      manager.save(UserEntity, user)
     }
     // async getSessionAndUser(sessionToken) {
     //   const m = await getManager(c)

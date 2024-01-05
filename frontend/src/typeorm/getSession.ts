@@ -3,9 +3,8 @@ import { SessionData } from './lib';
 import { defaultSession, sessionOptions } from './lib';
 import { getIronSession } from 'iron-session';
 import { cookies } from 'next/headers';
-import config from '../../../backend/dataSource/dataSource.config'
 
-const adapter = TypeORMAdapter(config)
+const adapter = TypeORMAdapter()
 
 export async function getSession() {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);

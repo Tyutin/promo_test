@@ -41,18 +41,17 @@ export class UserService {
 
   async createUserSession(
     user: UserEntity,
-    authRequest: AuthRequestEntity,
+    authRequestId: string,
   ): Promise<SessionEntity> {
     const alreadyExistingSession = await this.sessionRepository.findOne({
       where: {
         user: {
           id: user.id,
         },
-        authRequest,
+        authRequestId,
       },
       relations: {
         user: true,
-        authRequest: true,
       },
     });
     if (alreadyExistingSession) {
@@ -60,7 +59,7 @@ export class UserService {
     }
     const session = new SessionEntity();
     session.user = user;
-    session.authRequest = authRequest;
+    session.authRequestId = authRequestId;
     session.expires = new Date(new Date().setMonth(new Date().getMonth() + 6))
       .getTime()
       .toString();
@@ -95,6 +94,10 @@ export class UserService {
     if (!user) throw new UnprocessableEntityException();
     Object.assign(user, updateUserDto);
     return await this.userRepository.save(user);
+  }
+
+  async deleteAuthRequest(authRequest: AuthRequestEntity): Promise<void> {
+    await this.authRequestRepository.remove(authRequest);
   }
 
   buildUserResponse(user: UserEntity): UserResponseInterface {

@@ -85,9 +85,8 @@ export class SessionEntity implements SessionEntityInterface {
   @ManyToOne(() => UserEntity, (user) => user.sessions)
   user!: Relation<UserEntity>;
 
-  @OneToOne(() => AuthRequestEntity)
-  @JoinColumn()
-  authRequest!: Relation<AuthRequestEntity>;
+  @Column()
+  authRequestId: string;
 }
 
 @Entity('authRequests')

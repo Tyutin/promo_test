@@ -20,7 +20,7 @@ export default function LoginButton() {
         if (isUserSet) {
           clearInterval(pollingInterval);
         }
-      }, 5000);
+      }, 3000);
     }
     return () => {
       clearInterval(pollingInterval);

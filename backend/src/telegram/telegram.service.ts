@@ -1,4 +1,4 @@
-import { Command, Ctx, InjectBot, Start, Update } from 'nestjs-telegraf';
+import { Ctx, InjectBot, Start, Update } from 'nestjs-telegraf';
 import { PromocodeService } from 'src/promocode/promocode.service';
 import { UserService } from 'src/user/user.service';
 import { Context, Telegraf } from 'telegraf';
@@ -29,6 +29,7 @@ export class TelegramService {
         user = await this.promocoeService.setRefPromoToUser(user, promocode);
       }
     }
-    await this.userService.createUserSession(user, authRequest);
+    await this.userService.createUserSession(user, authRequestId);
+    await this.userService.deleteAuthRequest(authRequest);
   }
 }
