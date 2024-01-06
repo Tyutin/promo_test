@@ -4,7 +4,7 @@ import { OrdersResponseInterface } from '@shared/types/Order/front/OrdersRespons
 import { OrderResponseInterface } from '../../../backend/src/order/types/OrderResponse.interface';
 import { UpdateMyOrderDtoInterface } from '@shared/types/Order/UpdateMyOrder.dto';
 
-export const BACKEND_API_HOST = process.env.BACKEND_API_HOST || 'http://nestjs:3001' 
+export const BACKEND_API_HOST = process.env.BACKEND_API_HOST || 'http://backend:3001' 
 
 async function fetchBuilder (props: {endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'}, data?: any): Promise<Response> {
   const {endpoint,method} = props
